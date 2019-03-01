@@ -1,0 +1,7 @@
+
+package addressbook;
+
+
+public enum Operation {
+    CREATE_CONTACT,DELETE_CONTACT,EDIT_CONTACT,CONTACT_LIST,CONTACT_SEARCH,EXIT_APPLICATION;
+}

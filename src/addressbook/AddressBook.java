@@ -24,7 +24,7 @@ public class AddressBook {
     }
 
     public static void mainMenu() {
-
+           
         try {
             //Employee employee = new Employee();
 
@@ -33,42 +33,47 @@ public class AddressBook {
             System.out.println("1.Create Contact\n2.Edit Contact\n3.Search\n4.Delete Contact\n5.List\n6.Exit");
             System.out.print("\t(please select one option):");
             int i = inputValidation();
+            
             if (i > 6 || i < 0) {
                 System.out.println("\t(please enter [1-6] only)");
+                
                 AddressBook book = new AddressBook();
                 book.mainMenu();
             } else {
-                switch (i) {
+                Operation constants[]=Operation.values();
+                Operation operation1=constants[i-1];
+               
+                switch (operation1) {
                     default:
                         operation.exit();
                         break;
-                    case 1:
+                    case CREATE_CONTACT:
 
                         operation.createContact();
                         DAO.readObject();
                         break;
-                    case 2:
+                   case DELETE_CONTACT:
                         DAO.readObject();
                         operation.editContact();
                         break;
-                    case 3:
+                    case EDIT_CONTACT:
                         DAO.readObject();
                         operation.search();
                         break;
-                    case 4:
+                    case CONTACT_LIST:
                         DAO.readObject();
                         operation.deleteContact();
                         break;
-                    case 5:
+                    case CONTACT_SEARCH:
 
                         operation.list();
                         break;
-                    case 6:
+                    case EXIT_APPLICATION:
 
                         operation.exit();
                         break;
-
                 }
+                
             }
         } catch (IOException ex) {
             Logger.getLogger(AddressBook.class.getName()).log(Level.SEVERE, null, ex);

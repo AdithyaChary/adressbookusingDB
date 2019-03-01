@@ -1,5 +1,6 @@
 package addressbook;
 
+import db.DataBase;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -48,8 +49,9 @@ public class Operations {
         this.nameCreation(dao.e);
         this.mobileNumCreation(dao.e);
         this.emailIdCreation(dao.e);
-
+       DataBase.storeInDB(dao.e);
         DAO.employeeList.add(dao.e);
+        
 
         System.out.println(DAO.employeeList);
         DAO.writeObject();
