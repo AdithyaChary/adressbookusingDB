@@ -10,8 +10,21 @@ public class Operations {
 
     Scanner sc = new Scanner(System.in);
     DAO dao = new DAO();
-
+    public static String name;
+    public static Long mobileNum1;
+    public static String emailid1;
+    public static int option;
+    public static int option1;
+    public static String newName;
+    public static String enteredName;
+    public static int actualChanges;
+    public static long enteredMobileNum;
+    public static String enteredEmailId;
+    public static long newMobileNum;
+    public static String newEmailId;
+    
 //createcontact
+
     public void nameCreation(Employee e) {
         //Operations operation = new Operations();
         System.out.print("1.enter your name: ");
@@ -49,9 +62,8 @@ public class Operations {
         this.nameCreation(dao.e);
         this.mobileNumCreation(dao.e);
         this.emailIdCreation(dao.e);
-       DataBase.storeInDB(dao.e);
+        DataBase.storeInDB(dao.e);
         DAO.employeeList.add(dao.e);
-        
 
         System.out.println(DAO.employeeList);
         DAO.writeObject();
@@ -75,7 +87,7 @@ public class Operations {
 
         if (option == 1) {
             System.out.print("please enter the name: ");
-            String name = sc.next();
+            name = sc.next();
             String name1 = null;
 
             for (i = 0; i < DAO.employeeList.size(); i++) {
@@ -89,7 +101,7 @@ public class Operations {
                 }
 
             }
-            //System.out.println(ContactCreation.Con.get(--i));
+            DataBase.deleteFromDB(option);
             for (Employee e : DAO.employeeList) {
                 System.out.print("\n\t\t\t\t\t\t\tavailable contacts are: [" + e.getName() + e.getMobileNum() + e.getEmailId() + "]");
 
@@ -99,8 +111,9 @@ public class Operations {
 
         if (option == 2) {
             System.out.print("please enter the mobilenum: ");
-            Long mobileNum1 = sc.nextLong();
+            mobileNum1 = sc.nextLong();
             Long mobileNum;
+            DataBase.deleteFromDB(option);
 
             for (i = 0; i < DAO.employeeList.size(); i++) {
                 mobileNum = DAO.employeeList.get(i).getMobileNum();
@@ -116,7 +129,7 @@ public class Operations {
         }
         if (option == 3) {
             System.out.print("please enter the emailid:");
-            String emailid1 = sc.next();
+            emailid1 = sc.next();
             String emailid;
 
             for (i = 0; i < DAO.employeeList.size(); i++) {
@@ -143,11 +156,13 @@ public class Operations {
 
     public void choose(Employee edit) {
         System.out.println("\tplease choose what you want to change\n\t1.name\n\t2.mobileNum\n\t3.emailId or \n\t4.for exit");
-        int i = sc.nextInt();
-        switch (i) {
+        actualChanges = sc.nextInt();
+
+        switch (actualChanges) {
             case 1:
                 System.out.print("\tplease re-enter name:");
-                String newName = sc.next();
+                newName = sc.next();
+                DataBase.UpdateTable(actualChanges,option1);
                 edit.setName(newName);
                 System.out.print("\n\t\t\t\t\t\t\tNew data is[" + edit.getName() + " " + edit.getMobileNum() + " " + edit.getEmailId() + "]");
                 DAO.writeObject();
@@ -156,6 +171,7 @@ public class Operations {
             case 2:
                 System.out.print("\tplease re-enter mobileNum: ");
                 long newMobileNum = sc.nextLong();
+                DataBase.UpdateTable(actualChanges,option1);
                 edit.setMobileNum(newMobileNum);
                 System.out.print("\n\t\t\t\t\t\t\tNew data is[" + edit.getName() + " " + edit.getMobileNum() + " " + edit.getEmailId() + "]");
                 DAO.writeObject();
@@ -164,6 +180,7 @@ public class Operations {
             case 3:
                 System.out.print("\tplease re-enter emailId: ");
                 String newEmailId = sc.next();
+                DataBase.UpdateTable(actualChanges,option1);
                 edit.setEmailId(newEmailId);
                 System.out.print("\n\t\t\t\t\t\t\tNew data is[" + edit.getName() + edit.getMobileNum() + edit.getEmailId() + "]");
                 DAO.writeObject();
@@ -181,51 +198,99 @@ public class Operations {
 
     }
 
+    public void choose() {
+        System.out.println("\tplease choose what you want to change\n\t1.name\n\t2.mobileNum\n\t3.emailId or \n\t4.for exit");
+        actualChanges = sc.nextInt();
+
+        switch (actualChanges) {
+            case 1:
+                System.out.print("\tplease re-enter name:");
+                newName = sc.next();
+                DataBase.UpdateTable(actualChanges,option1);
+
+                this.choose();
+                break;
+            case 2:
+                System.out.print("\tplease re-enter mobileNum: ");
+                newMobileNum = sc.nextLong();
+                DataBase.UpdateTable(actualChanges,option1);
+                
+                this.choose();
+                break;
+            case 3:
+                System.out.print("\tplease re-enter emailId: ");
+                newEmailId = sc.next();
+                DataBase.UpdateTable(actualChanges,option1);
+                
+                this.choose();
+                break;
+            case 4:
+                AddressBook.mainMenu();
+            default:
+                System.out.print("\tplease enter [1-3]only: ");
+                break;
+        }
+        // edit.setName(name);
+
+        
+
+    }
+
     public void editContact() {
 
         // Operations operation = new Operations();
-        int option1 = this.editMenu();
+        option1 = this.editMenu();
+
         if (option1 == 1) {
             System.out.print("\tplease enter the name: ");
-            String name = sc.next();
+            enteredName = sc.next();
             Employee edit = null;
             for (Employee e : DAO.employeeList) {
-                if (e.getName().equals(name)) {
+                if (e.getName().equals(enteredName)) {
                     edit = e;
                     break;
                 }
 
             }
+            if(edit!=null){
             this.choose(edit);
+            }else
+                this.choose();  
         }
 
         if (option1 == 2) {
 
             System.out.print("\tplease enter mobileNum: ");
-            long mobileNum = sc.nextLong();
+            enteredMobileNum = sc.nextLong();
             Employee edit1 = null;
             for (Employee e : DAO.employeeList) {
-                if (e.getMobileNum() == mobileNum) {
+                if (e.getMobileNum() == enteredMobileNum) {
                     edit1 = e;
                     break;
                 }
 
             }
+             if(edit1!=null){
             this.choose(edit1);
+            }else
+                this.choose();  
 
         }
         if (option1 == 3) {
             System.out.print("\tplease enter emailId:");
-            String emailId = sc.next();
+            String enteredEmailId = sc.next();
             Employee edit2 = null;
             for (Employee e : DAO.employeeList) {
-                if (e.getEmailId() == emailId) {
+                if (e.getEmailId().equalsIgnoreCase(enteredEmailId)) {
                     edit2 = e;
                     break;
                 }
 
             }
+            if(edit2!=null){
             this.choose(edit2);
+            }else
+                this.choose();  
         }
 
     }
@@ -240,6 +305,7 @@ public class Operations {
         for (Employee e : DAO.employeeList) {
             System.out.println("\n\t\t\t\t\t\t\tavailable contacts are: [" + e.getName() + " " + e.getMobileNum() + " " + e.getEmailId() + "]");
         }
+        DataBase.retrieveFromDB();
         AddressBook.mainMenu();
     }
 

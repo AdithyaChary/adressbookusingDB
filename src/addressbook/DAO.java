@@ -13,17 +13,26 @@ import java.util.logging.Logger;
 
 public class DAO {
 
-    static ArrayList<Employee> employeeList = new ArrayList<Employee>();
-    Employee e = new Employee();
+    public static ArrayList<Employee> employeeList = new ArrayList<Employee>();
+    public static Employee e = new Employee();
     static String value = null;
-
+  static Properties properties = new Properties();
+   
+          
+          static  FileInputStream fis = null;
+           
+                
     public static String propertiesFileConfig(String key) {
-
-        Properties properties = new Properties();
         try {
-            FileInputStream fis = new FileInputStream("D:\\AdityaC\\Projects\\JavaProjects\\Demo\\AddressBook\\info.properties");
-            try {
-                properties.load(fis);
+            fis=new FileInputStream("D:\\AdityaC\\Projects\\JavaProjects\\Demo\\AddressBook\\info.properties");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            properties.load(fis);
+        } catch (IOException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
                 switch (key) {
                     case "filepath":
                         value = properties.getProperty("filepath");
@@ -31,6 +40,7 @@ public class DAO {
 
                     case "url":
                         value = properties.getProperty("url");
+                        System.out.println(value);
                         break;
                     case "uname":
                         value = properties.getProperty("uname");
@@ -48,13 +58,6 @@ public class DAO {
                 }
                
 
-            } catch (IOException ex) {
-                Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
          return value;
     }
 
